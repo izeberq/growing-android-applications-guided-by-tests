@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.ListView;
 import android.widget.SearchView;
+
 import com.github.frankiesardo.gaagbt.R;
 import com.github.frankiesardo.gaagbt.presentation.android.controller.BaseController;
 import com.github.frankiesardo.gaagbt.presentation.android.controller.SearchRepositoriesController;
