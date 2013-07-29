@@ -9,6 +9,7 @@ dependencies {
     compile "com.fasterxml.jackson.core:jackson-annotations:2.1.2"
     compile "com.fasterxml.jackson.core:jackson-databind:2.1.2"
     compile "com.fasterxml.jackson.core:jackson-core:2.1.1"
+    compile files('libs/gson-2.2.4.jar')
 
     testCompile "org.easytesting:fest-assert:1.4"
     testCompile "junit:junit:4.10"
