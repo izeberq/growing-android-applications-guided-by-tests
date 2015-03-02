@@ -1,27 +1,29 @@
 package com.github.frankiesardo.gaagbt.presentation.android.ui;
 
-import android.test.ActivityInstrumentationTestCase2;
 import com.github.frankiesardo.gaagbt.R;
 import com.github.frankiesardo.gaagbt.entity.Repository;
-import com.jayway.android.robotium.solo.Solo;
+import com.github.frankiesardo.gaagbt.util.ActivityTest;
+import com.robotium.solo.Solo;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import static com.github.frankiesardo.gaagbt.boundary.mock.MockSearchRepositories.ANDROID_KEYWORD;
 import static com.github.frankiesardo.gaagbt.boundary.mock.MockSearchRepositories.ANDROID_REPOSITORIES;
+import static junit.framework.Assert.assertTrue;
 
-public class SearchRepositoriesActivityTest extends ActivityInstrumentationTestCase2<SearchRepositoriesActivity> {
+public class SearchRepositoriesActivityTest extends ActivityTest {
 
     Solo solo;
 
-    public SearchRepositoriesActivityTest() {
-        super(SearchRepositoriesActivity.class);
-    }
-
-    @Override
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
-        solo = new Solo(getInstrumentation(), getActivity());
+        super.setUp(SearchRepositoriesActivity.class);
+        solo = new Solo(instrumentation, activity);
     }
 
+    @Test
     public void testDisplayRepositoriesDescription() throws Exception {
         solo.clickOnActionBarItem(R.id.menu_search);
         solo.enterText(0, ANDROID_KEYWORD);
@@ -31,10 +33,10 @@ public class SearchRepositoriesActivityTest extends ActivityInstrumentationTestC
         }
     }
 
-    @Override
+    @After
     public void tearDown() throws Exception {
         solo.finishOpenedActivities();
-        super.tearDown();
     }
+
 }
 
