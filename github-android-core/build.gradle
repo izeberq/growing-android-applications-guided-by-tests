@@ -16,4 +16,17 @@ dependencies {
     testCompile "org.mockito:mockito-core:1.9.5"
 }
 
+/**
+ * Copying resources manually to test classpath.
+ * It looks like that resources from java projects are not added to test resources classpath
+ * automatically, so getResourceAsStream will return null.
+ * https://code.google.com/p/android/issues/detail?id=64887
+ */
+task copyTestResources(type: Copy) {
+    from "${projectDir}/src/test/resources"
+    from "${projectDir}/src/main/resources"
+    into "${buildDir}/classes/test"
+}
+processTestResources.dependsOn copyTestResources
+
 jacocoTestReport.dependsOn test
