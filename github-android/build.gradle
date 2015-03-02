@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.5.4'
+        classpath 'com.android.tools.build:gradle:1.1.0'
     }
 }
 
@@ -19,8 +19,8 @@ sourceSets {
 }
 
 android {
-    compileSdkVersion 17
-    buildToolsVersion "17"
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         versionCode 1
@@ -40,7 +40,7 @@ version = "1.0.0"
 
 dependencies {
     compile project(':github-android-core')
-    instrumentTestCompile 'com.jayway.android.robotium:robotium-solo:3.6'
+    androidTestCompile 'com.jayway.android.robotium:robotium-solo:3.6'
 
     testLocalCompile project(':github-android-core')
     testLocalCompile "org.easytesting:fest-assert:1.4"
@@ -65,29 +65,30 @@ task localTest(type: Test, dependsOn: assemble) {
 
 check.dependsOn localTest
 
-addDefaultReportTasks(project.extensions.jacoco)
-
-jacocoAndroidTestReport.dependsOn localTest
-jacocoAndroidTestReport.dependsOn ':github-android-core:jacocoTestReport'
-
-void addDefaultReportTasks(extension) {
-    this.project.tasks.withType(Test) { task ->
-        reportTask = this.project.tasks.create("jacocoAndroidTestReport", JacocoReport)
-        reportTask.executionData task
-        reportTask.sourceSets(this.project.sourceSets.testLocal)
-        reportTask.conventionMapping.with {
-            reportTask.reports.all { report ->
-                report.conventionMapping.with {
-                    enabled = { true }
-                    if (report.outputType == Report.OutputType.DIRECTORY) {
-                        destination = { new File(extension.reportsDir, "${task.name}/${report.name}") }
-                    } else {
-                        destination = {
-                            new File(extension.reportsDir, "${task.name}/${reportTask.name}.${report.name}")
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
+// TODO jacoco
+//addDefaultReportTasks(project.extensions.jacoco)
+//
+//jacocoAndroidTestReport.dependsOn localTest
+//jacocoAndroidTestReport.dependsOn ':github-android-core:jacocoTestReport'
+//
+//void addDefaultReportTasks(extension) {
+//    this.project.tasks.withType(Test) { task ->
+//        reportTask = this.project.tasks.create("jacocoAndroidTestReport", JacocoReport)
+//        reportTask.executionData task
+//        reportTask.sourceSets(this.project.sourceSets.testLocal)
+//        reportTask.conventionMapping.with {
+//            reportTask.reports.all { report ->
+//                report.conventionMapping.with {
+//                    enabled = { true }
+//                    if (report.outputType == Report.OutputType.DIRECTORY) {
+//                        destination = { new File(extension.reportsDir, "${task.name}/${report.name}") }
+//                    } else {
+//                        destination = {
+//                            new File(extension.reportsDir, "${task.name}/${reportTask.name}.${report.name}")
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
