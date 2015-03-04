@@ -2,16 +2,17 @@ package com.github.frankiesardo.gaagbt.framework.retrofit;
 
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.frankiesardo.gaagbt.framework.converter.JsonConverter;
-import retrofit.converter.ConversionException;
-import retrofit.converter.Converter;
-import retrofit.mime.MimeUtil;
-import retrofit.mime.TypedInput;
-import retrofit.mime.TypedOutput;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
+
+import retrofit.converter.ConversionException;
+import retrofit.converter.Converter;
+import retrofit.mime.MimeUtil;
+import retrofit.mime.TypedInput;
+import retrofit.mime.TypedOutput;
 
 public class RetrofitConverter implements Converter {
 
@@ -35,6 +36,7 @@ public class RetrofitConverter implements Converter {
                 try {
                     isr.close();
                 } catch (IOException ignored) {
+
                 }
             }
         }

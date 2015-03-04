@@ -4,14 +4,16 @@ import com.github.frankiesardo.gaagbt.boundary.GithubApi;
 import com.github.frankiesardo.gaagbt.entity.Repositories;
 import com.github.frankiesardo.gaagbt.entity.Repository;
 import com.github.frankiesardo.gaagbt.framework.injection.ApiLevel;
-import dagger.Module;
-import dagger.ObjectGraph;
+
+import javax.inject.Inject;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
 
-import javax.inject.Inject;
+import dagger.Module;
+import dagger.ObjectGraph;
 
 import static org.fest.assertions.Assertions.assertThat;
 

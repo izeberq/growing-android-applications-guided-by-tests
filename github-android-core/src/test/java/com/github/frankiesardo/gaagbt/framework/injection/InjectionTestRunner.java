@@ -1,8 +1,9 @@
 package com.github.frankiesardo.gaagbt.framework.injection;
 
-import dagger.ObjectGraph;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
+
+import dagger.ObjectGraph;
 
 public class InjectionTestRunner extends BlockJUnit4ClassRunner {
 

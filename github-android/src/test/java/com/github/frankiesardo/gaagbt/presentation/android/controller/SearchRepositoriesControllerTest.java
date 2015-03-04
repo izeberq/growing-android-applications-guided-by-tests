@@ -2,21 +2,24 @@ package com.github.frankiesardo.gaagbt.presentation.android.controller;
 
 import android.app.ActionBar;
 import android.widget.ListView;
+
 import com.github.frankiesardo.gaagbt.entity.Repositories;
 import com.github.frankiesardo.gaagbt.entity.Repository;
-import com.github.frankiesardo.gaagbt.presentation.CachedPresentation;
+import com.github.frankiesardo.gaagbt.presentation.Producer;
+import com.github.frankiesardo.gaagbt.presentation.android.adapter.ActionBarTitleAdapter;
 import com.github.frankiesardo.gaagbt.presentation.android.adapter.RepositoriesAdapter;
 import com.github.frankiesardo.gaagbt.request.SearchRepositoriesRequest;
 import com.github.frankiesardo.gaagbt.response.SearchRepositoriesResponse;
 import com.github.frankiesardo.gaagbt.scenario.ScenarioDispatcher;
+
+import java.util.Collections;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.Collections;
 
 import static org.mockito.Mockito.*;
 
@@ -28,9 +31,11 @@ public class SearchRepositoriesControllerTest {
     @Mock
     ScenarioDispatcher dispatcher;
     @Mock
-    CachedPresentation<SearchRepositoriesResponse> cachedPresentation;
+    Producer<SearchRepositoriesResponse> producer;
     @Mock
-    RepositoriesAdapter adapter;
+    RepositoriesAdapter repositoriesAdapter;
+    @Mock
+    ActionBarTitleAdapter actionBarTitleAdapter;
     @InjectMocks
     SearchRepositoriesController controller;
 
@@ -45,59 +50,32 @@ public class SearchRepositoriesControllerTest {
     }
 
     @Test
-    public void bindAdapterToListOnInit() throws Exception {
-        verify(listView).setAdapter(adapter);
+    public void bindRepositoriesAdapterToListOnInit() throws Exception {
+        verify(listView).setAdapter(repositoriesAdapter);
+    }
+
+    @Test
+    public void bindActionBarTitleAdapterToActionBarOnInit() throws Exception {
+        verify(actionBarTitleAdapter).setActionBar(actionBar);
     }
 
     @Test
     public void enableCachingOnInit() throws Exception {
-        verify(cachedPresentation).enableCaching();
+        verify(producer).enableCaching();
     }
 
     @Test
     public void displayQueryInTheActionBar() throws Exception {
-        controller.startNewSearch(QUERY);
+        controller.startSearch(QUERY);
 
-        verify(actionBar).setTitle(contains(QUERY));
+        verify(actionBarTitleAdapter).setSearchQuery(QUERY);
     }
 
     @Test
-    public void dispatchSearchForANewQuery() throws Exception {
-        controller.startNewSearch(QUERY);
+    public void startSearchForQuery() throws Exception {
+        controller.startSearch(QUERY);
 
-        verify(dispatcher).searchRepositories(same(cachedPresentation), eq(new SearchRepositoriesRequest(QUERY)));
-    }
-
-    @Test
-    public void clearAdapterForANewQuery() throws Exception {
-        controller.startNewSearch(QUERY);
-
-        verify(adapter).clearItems();
-    }
-
-    @Test
-    public void clearCacheForANewQuery() throws Exception {
-        controller.startNewSearch(QUERY);
-
-        verify(cachedPresentation).clearCache();
-    }
-
-    @Test
-    public void notDispatchSearchOnRestoreIfCacheHasValue() throws Exception {
-        when(cachedPresentation.hasCachedValue()).thenReturn(true);
-
-        controller.restorePreviousSearch(QUERY);
-
-        verifyZeroInteractions(dispatcher);
-    }
-
-    @Test
-    public void dispatchSearchOnRestoreIfCacheHasNoValue() throws Exception {
-        when(cachedPresentation.hasCachedValue()).thenReturn(false);
-
-        controller.restorePreviousSearch(QUERY);
-
-        verify(dispatcher).searchRepositories(same(cachedPresentation), eq(new SearchRepositoriesRequest(QUERY)));
+        verify(dispatcher).searchRepositories(same(producer), eq(new SearchRepositoriesRequest(QUERY)));
     }
 
     @Test
@@ -108,13 +86,46 @@ public class SearchRepositoriesControllerTest {
 
         controller.onResponse(response);
 
-        verify(adapter).setItems(result);
+        verify(repositoriesAdapter).setItems(result);
     }
 
     @Test
     public void disableCachingOnDispose() throws Exception {
         controller.dispose();
 
-        verify(cachedPresentation).disableCaching();
+        verify(producer).disableCaching();
     }
+//
+//    @Test
+//    public void clearAdapterForANewQuery() throws Exception {
+//        controller.startNewSearch(QUERY);
+//
+//        verify(adapter).clearItems();
+//    }
+//
+//    @Test
+//    public void clearCacheForANewQuery() throws Exception {
+//        controller.startNewSearch(QUERY);
+//
+//        verify(cachedPresentation).clearCache();
+//    }
+//
+//    @Test
+//    public void notDispatchSearchOnRestoreIfCacheHasValue() throws Exception {
+//        when(cachedPresentation.hasCachedValue()).thenReturn(true);
+//
+//        controller.restorePreviousSearch(QUERY);
+//
+//        verifyZeroInteractions(dispatcher);
+//    }
+//
+//    @Test
+//    public void dispatchSearchOnRestoreIfCacheHasNoValue() throws Exception {
+//        when(cachedPresentation.hasCachedValue()).thenReturn(false);
+//
+//        controller.restorePreviousSearch(QUERY);
+//
+//        verify(dispatcher).searchRepositories(same(cachedPresentation), eq(new SearchRepositoriesRequest(QUERY)));
+//    }
+
 }

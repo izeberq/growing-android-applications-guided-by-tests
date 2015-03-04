@@ -1,15 +1,17 @@
 package com.github.frankiesardo.gaagbt.framework.retrofit;
 
 import com.github.frankiesardo.gaagbt.framework.converter.JsonConverter;
+
+import java.io.Reader;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
 import retrofit.mime.TypedInput;
 import retrofit.mime.TypedOutput;
-
-import java.io.Reader;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;

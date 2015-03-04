@@ -2,8 +2,9 @@ package com.github.frankiesardo.gaagbt.presentation.android.controller;
 
 import android.app.ActionBar;
 import android.widget.ListView;
-import com.github.frankiesardo.gaagbt.R;
-import com.github.frankiesardo.gaagbt.presentation.CachedPresentation;
+
+import com.github.frankiesardo.gaagbt.presentation.Producer;
+import com.github.frankiesardo.gaagbt.presentation.android.adapter.ActionBarTitleAdapter;
 import com.github.frankiesardo.gaagbt.presentation.android.adapter.RepositoriesAdapter;
 import com.github.frankiesardo.gaagbt.request.SearchRepositoriesRequest;
 import com.github.frankiesardo.gaagbt.response.SearchRepositoriesResponse;
@@ -13,58 +14,54 @@ import com.squareup.otto.Subscribe;
 public class SearchRepositoriesController extends BaseController {
 
     private final ScenarioDispatcher dispatcher;
-    private final CachedPresentation<SearchRepositoriesResponse> cachedPresentation;
-    private final RepositoriesAdapter adapter;
-
-    private ActionBar actionBar;
+    private final Producer<SearchRepositoriesResponse> producer;
+    private final RepositoriesAdapter repositoriesAdapter;
+    private final ActionBarTitleAdapter actionBarTitleAdapter;
 
     public SearchRepositoriesController(ScenarioDispatcher dispatcher,
-                                        CachedPresentation<SearchRepositoriesResponse> cachedPresentation,
-                                        RepositoriesAdapter adapter) {
+                                        Producer<SearchRepositoriesResponse> producer,
+                                        RepositoriesAdapter repositoriesAdapter,
+                                        ActionBarTitleAdapter actionBarTitleAdapter) {
         this.dispatcher = dispatcher;
-        this.cachedPresentation = cachedPresentation;
-        this.adapter = adapter;
+        this.producer = producer;
+        this.repositoriesAdapter = repositoriesAdapter;
+        this.actionBarTitleAdapter = actionBarTitleAdapter;
     }
 
     public void init(ListView listView, ActionBar actionBar) {
-        this.actionBar = actionBar;
-        listView.setAdapter(adapter);
-        cachedPresentation.enableCaching();
+        listView.setAdapter(repositoriesAdapter);
+        actionBarTitleAdapter.setActionBar(actionBar);
+        producer.enableCaching();
     }
 
-    public void startNewSearch(String query) {
+    public void startSearch(String query) {
         updateTitle(query);
-        clearCurrentItems();
-        dispatchSearch(query);
-    }
-
-    public void restorePreviousSearch(String query) {
-        updateTitle(query);
-        if (!cachedPresentation.hasCachedValue()) {
-            dispatchSearch(query);
-        }
+        dispatchSearch(new SearchRepositoriesRequest(query));
     }
 
     private void updateTitle(String query) {
-        actionBar.setTitle("\"" + query + "\"");
-        actionBar.setSubtitle(R.string.search_results);
+        actionBarTitleAdapter.setSearchQuery(query);
+    }
+
+    private void dispatchSearch(SearchRepositoriesRequest request) {
+        if (producer.hasCachedValue() && producer.getCachedValue().isFrom(request)) {
+            return;
+        }
+        clearCurrentItems();
+        dispatcher.searchRepositories(producer, request);
     }
 
     private void clearCurrentItems() {
-        adapter.clearItems();
-        cachedPresentation.clearCache();
-    }
-
-    private void dispatchSearch(String query) {
-        dispatcher.searchRepositories(cachedPresentation, new SearchRepositoriesRequest(query));
+        repositoriesAdapter.clearItems();
+        producer.clearCache();
     }
 
     @Subscribe
     public void onResponse(SearchRepositoriesResponse response) {
-        adapter.setItems(response.getResult());
+        repositoriesAdapter.setItems(response.getResult());
     }
 
     public void dispose() {
-        cachedPresentation.disableCaching();
+        producer.disableCaching();
     }
 }

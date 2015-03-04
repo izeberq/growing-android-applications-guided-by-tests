@@ -1,6 +1,6 @@
 package com.github.frankiesardo.gaagbt.request;
 
-public class SearchRepositoriesRequest {
+public class SearchRepositoriesRequest implements Request {
     private String keyword;
 
     public SearchRepositoriesRequest(String keyword) {

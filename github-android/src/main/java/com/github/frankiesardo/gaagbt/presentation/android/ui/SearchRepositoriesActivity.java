@@ -18,12 +18,8 @@ import javax.inject.Inject;
 
 public class SearchRepositoriesActivity extends BaseActivity {
 
-    private final static String QUERY_KEY = SearchRepositoriesActivity.class.getCanonicalName() + ".QUERY_KEY";
-
     @Inject
     SearchRepositoriesController controller;
-
-    String query;
 
     @Override
     protected BaseController getController() {
@@ -37,42 +33,20 @@ public class SearchRepositoriesActivity extends BaseActivity {
 
         controller.init((ListView) findViewById(R.id.list), getActionBar());
 
-        startOrRestoreSearch(savedInstanceState);
-    }
-
-    private void startOrRestoreSearch(Bundle savedInstanceState) {
-        query = savedInstanceState != null ? savedInstanceState.getString(QUERY_KEY) : null;
-        if (query != null) {
-            controller.restorePreviousSearch(query);
-        } else {
-            handleIntent(getIntent());
-        }
+        handleIntent(getIntent());
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        setIntent(intent);
         handleIntent(intent);
     }
 
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            query = intent.getStringExtra(SearchManager.QUERY);
-            controller.startNewSearch(query);
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(QUERY_KEY, query);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (isFinishing()) {
-            controller.dispose();
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            controller.startSearch(query);
         }
     }
 
@@ -89,6 +63,14 @@ public class SearchRepositoriesActivity extends BaseActivity {
                 searchManager.getSearchableInfo(getComponentName()));
 
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (isFinishing()) {
+            controller.dispose();
+        }
     }
 }
 

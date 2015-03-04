@@ -4,11 +4,12 @@ import com.github.frankiesardo.gaagbt.boundary.GithubApi;
 import com.github.frankiesardo.gaagbt.boundary.retrofit.RetrofitGithubApi;
 import com.github.frankiesardo.gaagbt.framework.converter.JsonConverter;
 import com.github.frankiesardo.gaagbt.framework.retrofit.RetrofitConverter;
+
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import retrofit.RestAdapter;
-
-import javax.inject.Singleton;
 
 @Module(includes = ConverterModule.class)
 public class DebugGithubApiModule {

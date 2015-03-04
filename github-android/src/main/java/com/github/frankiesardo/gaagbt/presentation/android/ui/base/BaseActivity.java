@@ -2,6 +2,7 @@ package com.github.frankiesardo.gaagbt.presentation.android.ui.base;
 
 import android.app.Activity;
 import android.os.Bundle;
+
 import com.github.frankiesardo.gaagbt.framework.injection.InjectingApplication;
 import com.github.frankiesardo.gaagbt.presentation.android.controller.BaseController;
 import com.squareup.otto.Bus;

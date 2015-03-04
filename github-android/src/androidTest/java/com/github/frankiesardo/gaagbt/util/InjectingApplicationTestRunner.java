@@ -3,7 +3,6 @@ package com.github.frankiesardo.gaagbt.util;
 import android.app.Application;
 import android.content.Context;
 import android.support.test.runner.AndroidJUnitRunner;
-import android.test.InstrumentationTestRunner;
 import com.github.frankiesardo.gaagbt.framework.injection.ApiLevel;
 import com.github.frankiesardo.gaagbt.framework.injection.InjectingApplication;
 

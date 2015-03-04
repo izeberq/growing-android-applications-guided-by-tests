@@ -2,6 +2,7 @@ package com.github.frankiesardo.gaagbt.presentation.android.ui;
 
 import com.github.frankiesardo.gaagbt.presentation.android.controller.BaseController;
 import com.squareup.otto.Bus;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
