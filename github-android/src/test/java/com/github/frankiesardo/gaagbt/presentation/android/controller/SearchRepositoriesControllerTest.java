@@ -95,37 +95,5 @@ public class SearchRepositoriesControllerTest {
 
         verify(producer).disableCaching();
     }
-//
-//    @Test
-//    public void clearAdapterForANewQuery() throws Exception {
-//        controller.startNewSearch(QUERY);
-//
-//        verify(adapter).clearItems();
-//    }
-//
-//    @Test
-//    public void clearCacheForANewQuery() throws Exception {
-//        controller.startNewSearch(QUERY);
-//
-//        verify(cachedPresentation).clearCache();
-//    }
-//
-//    @Test
-//    public void notDispatchSearchOnRestoreIfCacheHasValue() throws Exception {
-//        when(cachedPresentation.hasCachedValue()).thenReturn(true);
-//
-//        controller.restorePreviousSearch(QUERY);
-//
-//        verifyZeroInteractions(dispatcher);
-//    }
-//
-//    @Test
-//    public void dispatchSearchOnRestoreIfCacheHasNoValue() throws Exception {
-//        when(cachedPresentation.hasCachedValue()).thenReturn(false);
-//
-//        controller.restorePreviousSearch(QUERY);
-//
-//        verify(dispatcher).searchRepositories(same(cachedPresentation), eq(new SearchRepositoriesRequest(QUERY)));
-//    }
 
 }
